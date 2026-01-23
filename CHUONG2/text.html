@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khách sạn Nhật Duy - Hệ thống Quản lý</title>
+    <style>
+        /* CSS Giao diện */
+        body { font-family: Verdana, Arial, sans-serif; margin: 0; background-color: #f4f4f4; }
+        html { scroll-behavior: smooth; }
+
+        /* Menu cố định */
+        .navbar { position: sticky; top: 0; z-index: 1000; background-color: #003366; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .menu-link { text-decoration: none; color: white; padding: 15px 20px; font-weight: bold; display: inline-block; font-size: 14px;}
+        .menu-link:hover { background-color: #ffcc00; color: #003366; }
+
+        /* Các phần nội dung */
+        .section { padding: 50px 0; border-bottom: 1px solid #ddd; background-color: white; }
+        
+        /* Nút bấm */
+        .btn { padding: 10px 20px; border: none; cursor: pointer; font-weight: bold; color: white; border-radius: 4px; }
+        .btn-green { background-color: #28a745; }
+        .btn-red { background-color: #dc3545; }
+        .btn:hover { opacity: 0.9; }
+        
+        /* Bảng admin */
+        .admin-table { border-collapse: collapse; width: 100%; }
+        .admin-table th, .admin-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        .admin-table th { background-color: #003366; color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td width="30%" style="padding-left: 20px;">
+                    <font color="white" size="5" face="Arial"><b>KHÁCH SẠN NHẬT DUY</b></font>
+                </td>
+                <td align="right">
+                    <a href="#trangchu" class="menu-link">TRANG CHỦ</a>
+                    <a href="#phongnghi" class="menu-link">PHÒNG NGHỈ</a>
+                    <a href="#datphong" class="menu-link">ĐẶT PHÒNG</a>
+                    <a href="#admin" class="menu-link">QUẢN LÝ (ADMIN)</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="trangchu" class="section" style="padding-top: 0;">
+        <img src="https://placehold.co/1200x450/003366/white?text=KHACH+SAN+NHAT+DUY" width="100%">
+        <table width="900" align="center" border="0" cellpadding="20">
+            <tr>
+                <td align="center">
+                    <h1 style="color: #003366;">CHÀO MỪNG ĐẾN VỚI NHẬT DUY HOTEL</h1>
+                    <p align="justify" style="font-size: 18px;">
+                        Hệ thống đặt phòng trực tuyến hiện đại. Dữ liệu được cập nhật thời gian thực (Real-time).
+                    </p>
+                    <a href="#datphong"><button class="btn btn-red">ĐẶT PHÒNG NGAY</button></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="phongnghi" class="section" style="background-color: #eef2f5;">
+        <h1 align="center" style="color: #003366;">HỆ THỐNG PHÒNG NGHỈ</h1>
+        
+        <table width="900" align="center" cellspacing="20" border="0">
+            <tr>
+                <td width="45%"><img src="https://placehold.co/400x250/28a745/white?text=PHONG+DON+(Standard)" width="100%"></td>
+                <td bgcolor="white" style="padding: 20px;">
+                    <h2 style="color: #003366;">Phòng Đơn (Standard)</h2>
+                    <h3 style="color: #dc3545;">Giá: 350.000 VNĐ / Đêm</h3>
+                    <a href="#datphong" onclick="chonPhong('Phòng Đơn Standard')"><button class="btn btn-green">Chọn phòng này</button></a>
+                </td>
+            </tr>
+            <tr>
+                <td width="45%"><img src="https://placehold.co/400x250/ff9900/white?text=PHONG+DOI+(VIP)" width="100%"></td>
+                <td bgcolor="white" style="padding: 20px;">
+                    <h2 style="color: #003366;">Phòng Đôi (VIP)</h2>
+                    <h3 style="color: #dc3545;">Giá: 650.000 VNĐ / Đêm</h3>
+                    <a href="#datphong" onclick="chonPhong('Phòng Đôi VIP')"><button class="btn btn-green">Chọn phòng này</button></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="datphong" class="section">
+        <h1 align="center" style="color: #dc3545;">PHIẾU ĐẶT PHÒNG ONLINE</h1>
+        
+        <form id="bookingForm" onsubmit="xuLyDatPhong(event)">
+            <table align="center" bgcolor="#fff" border="1" cellpadding="10" cellspacing="0" width="700" bordercolor="#ccc">
+                <tr bgcolor="#003366">
+                    <td colspan="2" align="center">
+                        <font color="white" size="4"><b>THÔNG TIN KHÁCH HÀNG</b></font>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td width="30%" align="right"><b>Họ và tên:</b></td>
+                    <td><input type="text" id="hoTen" size="45" placeholder="Ví dụ: Nguyễn Văn A" required></td>
+                </tr>
+                <tr>
+                    <td align="right"><b>Số điện thoại:</b></td>
+                    <td><input type="text" id="soDienThoai" size="45" placeholder="Nhập số điện thoại..." required></td>
+                </tr>
+                <tr>
+                    <td align="right"><b>Chọn phòng:</b></td>
+                    <td>
+                        <select id="loaiPhong" style="width: 250px; padding: 5px;">
+                            <option value="Phòng Đơn Standard">Phòng Đơn Standard (350k)</option>
+                            <option value="Phòng Đôi VIP">Phòng Đôi VIP (650k)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><b>Ngày nhận phòng:</b></td>
+                    <td><input type="date" id="ngayNhan" required></td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2" align="center" bgcolor="#f9f9f9">
+                        <br>
+                        <button type="submit" class="btn btn-red">XÁC NHẬN ĐẶT PHÒNG</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <div id="admin" class="section" style="background-color: #2c3e50; color: white;">
+        <h1 align="center">HỆ THỐNG QUẢN TRỊ NHẬT DUY</h1>
+        <p align="center"><i>(Dữ liệu được cập nhật tự động từ Form đặt phòng)</i></p>
+
+        <table width="900" align="center" border="0" cellpadding="20" bgcolor="white" style="color: black; border-radius: 8px;">
+            <tr>
+                <td>
+                    <h3 style="color: #003366;">Danh sách đơn đặt phòng mới nhất</h3>
+                    
+                    <table class="admin-table" id="bangQuanLy">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên khách</th>
+                                <th>SĐT</th>
+                                <th>Loại phòng</th>
+                                <th>Ngày đến</th>
+                                <th>Tác vụ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="thanBang">
+                            </tbody>
+                    </table>
+                    
+                    <br>
+                    <button onclick="xoaTatCa()" class="btn btn-red" style="font-size: 12px;">Xóa toàn bộ dữ liệu (Reset)</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="background-color: #1a1a1a; color: white; text-align: center; padding: 20px; font-size: 14px;">
+        <p><b>KHÁCH SẠN NHẬT DUY</b></p>
+        &copy; 2026 Bản quyền thuộc về Nhóm 4
+    </div>
+
+    <script>
+        // 1. Khi trang web tải xong, hãy nạp dữ liệu cũ lên bảng
+        window.onload = function() {
+            hienThiDanhSach();
+        };
+
+        // 2. Hàm hỗ trợ chọn phòng từ danh sách (Tự điền vào Select box)
+        function chonPhong(tenPhong) {
+            document.getElementById('loaiPhong').value = tenPhong;
+        }
+
+        // 3. Hàm Xử lý khi bấm nút "XÁC NHẬN ĐẶT PHÒNG"
+        function xuLyDatPhong(event) {
+            event.preventDefault(); // Ngăn không cho trang web tải lại
+
+            // Lấy thông tin từ các ô nhập
+            var ten = document.getElementById('hoTen').value;
+            var sdt = document.getElementById('soDienThoai').value;
+            var phong = document.getElementById('loaiPhong').value;
+            var ngay = document.getElementById('ngayNhan').value;
+
+            // Tạo một đối tượng khách hàng
+            var khachHang = {
+                ten: ten,
+                sdt: sdt,
+                phong: phong,
+                ngay: ngay
+            };
+
+            // Lấy danh sách cũ từ bộ nhớ ra (nếu có)
+            var danhSach = JSON.parse(localStorage.getItem('danhSachDatPhong')) || [];
+            
+            // Thêm khách mới vào danh sách
+            danhSach.push(khachHang);
+
+            // Lưu lại vào bộ nhớ trình duyệt
+            localStorage.setItem('danhSachDatPhong', JSON.stringify(danhSach));
+
+            // Thông báo và làm mới form
+            alert('Chúc mừng ' + ten + '! Bạn đã đặt phòng thành công.\nThông tin đã chuyển xuống bộ phận Quản lý.');
+            document.getElementById('bookingForm').reset();
+
+            // Cập nhật lại bảng Admin ngay lập tức
+            hienThiDanhSach();
+            
+            // Tự động cuộn xuống phần Admin cho khách xem (Demo)
+            window.location.href = "#admin";
+        }
+
+        // 4. Hàm hiển thị danh sách ra bảng Admin
+        function hienThiDanhSach() {
+            var danhSach = JSON.parse(localStorage.getItem('danhSachDatPhong')) || [];
+            var bang = document.getElementById('thanBang');
+            bang.innerHTML = ""; // Xóa trắng bảng trước khi in lại
+
+            if (danhSach.length === 0) {
+                bang.innerHTML = "<tr><td colspan='6'>Chưa có dữ liệu đặt phòng</td></tr>";
+                return;
+            }
+
+            // Duyệt qua từng khách hàng và tạo dòng (tr)
+            for (var i = 0; i < danhSach.length; i++) {
+                var khach = danhSach[i];
+                var dong = `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${khach.ten}</td>
+                        <td>${khach.sdt}</td>
+                        <td>${khach.phong}</td>
+                        <td>${khach.ngay}</td>
+                        <td>
+                            <button class="btn btn-red" style="padding: 5px 10px;" onclick="xoaDon(${i})">Xóa</button>
+                        </td>
+                    </tr>
+                `;
+                bang.innerHTML += dong;
+            }
+        }
+
+        // 5. Hàm xóa 1 đơn hàng
+        function xoaDon(index) {
+            if(confirm("Bạn có chắc muốn xóa đơn này không?")) {
+                var danhSach = JSON.parse(localStorage.getItem('danhSachDatPhong')) || [];
+                danhSach.splice(index, 1); // Xóa phần tử tại vị trí index
+                localStorage.setItem('danhSachDatPhong', JSON.stringify(danhSach));
+                hienThiDanhSach(); // Vẽ lại bảng
+            }
+        }
+
+        // 6. Hàm xóa tất cả (Reset)
+        function xoaTatCa() {
+            if(confirm("Cảnh báo: Toàn bộ dữ liệu đặt phòng sẽ bị mất!")) {
+                localStorage.removeItem('danhSachDatPhong');
+                hienThiDanhSach();
+            }
+        }
+    </script>
+
+</body>
+</html>
